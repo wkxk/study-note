@@ -1,0 +1,12 @@
+{
+  "name": "generator-wkxk-vue",
+  "version": "1.0.0",
+  "description": "my cli",
+  "main": "index.js",
+  "repository": "https://github.com/wkxk/generator-wkxk-vue",
+  "author": "wkxk",
+  "license": "MIT",
+  "dependencies": {
+    "yeoman-generator": "4.13.0"
+  }
+}
