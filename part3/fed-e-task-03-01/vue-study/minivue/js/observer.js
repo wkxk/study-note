@@ -12,6 +12,7 @@ class Observer {
   }
 
   defineRactive (obj, key, val) {
+    const that = this
     // 如果val是对象，把val内部的属性转化为响应式数据
     this.walk(val)
     Object.defineProperty(obj, key, {
@@ -23,6 +24,7 @@ class Observer {
       set (newValue) {
         if (newValue === val) return
         val = newValue
+        that.walk(newValue)
         // 发送通知
       }
     })
