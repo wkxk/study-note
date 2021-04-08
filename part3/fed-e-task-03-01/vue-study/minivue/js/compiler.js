@@ -23,8 +23,38 @@ class Compiler {
   }
   // 编译元素节点，处理指令
   compileElement (node) {
-
+    Array.from(node.attributes).forEach(attr => {
+      let attrName = attr.name
+      if (this.isDirective(attrName)) {
+        attrName = attrName.substr(2)
+        let key = attr.value
+        this.update(node, key, attrName)
+      }
+    })
   }
+  update (node, key, attrName) {
+    let updateFn = this[`${attrName}Updater`]
+    updateFn && updateFn.call(this, node, this.vm[key], key)
+  }
+  // 处理v-text指令
+  textUpdater (node, value, key) {
+    node.textContent = value
+    new Watcher(this.vm, key, newValue => {
+      node.textContent = newValue
+    })
+  }
+  // 处理v-model指令
+  modelUpdater (node, value, key) {
+    node.value = value
+    new Watcher(this.vm, key, newValue => {
+      node.value = newValue
+    })
+    // 双向绑定
+    node.addEventListener('input', () => {
+      this.vm[key] = node.value
+    })
+  }
+
   // 编译文本节点，处理差值表达式
   compileText (node) {
     // console.log(node);
@@ -33,6 +63,11 @@ class Compiler {
     if (reg.test(value)) {
       const key = RegExp.$1.trim()
       node.textContent = value.replace(reg, this.vm[key])
+
+      // 创建watcher对象，当数据改变时更新数据
+      new Watcher(this.vm, key, newValue => {
+        node.textContent = newValue
+      })
     }
   }
   // 判断元素属性是否是指令
