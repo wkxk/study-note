@@ -1,0 +1,15 @@
+{
+  "name": "snabbdom-homework",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "snabbdom": "2.1.0"
+  },
+  "scripts": {
+    "dev": "parcel index.html --open"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}
